@@ -26,7 +26,6 @@ export const makeRequest = async (opts) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  console.log("here is the login req", options);
   if (opts.contentType) {
     options.headers["Content-Type"] = opts.contentType;
   }

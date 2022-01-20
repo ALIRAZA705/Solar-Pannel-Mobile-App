@@ -6,16 +6,19 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Caption } from "react-native-paper";
 export default function Header(props) {
+  const { parentCallback } = props;
   const [selectedHeaderIcon, setSelectedHeaderIcon] = React.useState("Grid");
+
+  const handleCallback = (headerIcon) => {
+    setSelectedHeaderIcon(headerIcon);
+    parentCallback(headerIcon);
+  };
   return (
     <View style={styles.headerIcons}>
       <View style={styles.iconContainer}>
         <TouchableOpacity
           style={styles.iconContainer}
-          onPress={() => {
-            console.log("here is the selected header ", selectedHeaderIcon);
-            setSelectedHeaderIcon("Grid");
-          }}
+          onPress={() => handleCallback("Grid")}
         >
           <MaterialCommunityIcons
             name="transmission-tower"
@@ -41,7 +44,7 @@ export default function Header(props) {
       <View style={styles.iconContainer}>
         <TouchableOpacity
           style={styles.iconContainer}
-          onPress={() => setSelectedHeaderIcon("Solar")}
+          onPress={() => handleCallback("Solar")}
         >
           <FontAwesome5
             name="solar-panel"
@@ -67,7 +70,7 @@ export default function Header(props) {
       <View style={{ flexDirection: "column", alignItems: "center" }}>
         <TouchableOpacity
           style={styles.iconContainer}
-          onPress={() => setSelectedHeaderIcon("Home")}
+          onPress={() => handleCallback("Home")}
         >
           <Icon
             name="home-outline"
@@ -94,7 +97,7 @@ export default function Header(props) {
       <View style={{ flexDirection: "column", alignItems: "center" }}>
         <TouchableOpacity
           style={styles.iconContainer}
-          onPress={() => setSelectedHeaderIcon("Battery")}
+          onPress={() => handleCallback("Battery")}
         >
           <MaterialCommunityIcons
             name="battery-charging-30"

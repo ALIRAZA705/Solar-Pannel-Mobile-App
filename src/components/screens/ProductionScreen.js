@@ -16,23 +16,28 @@ import YearsGridDuration from "../DurationTabScreen/GridDuration/YearsDuration";
 import WeeksProduction from "./Production/Solar/WeeksProduction";
 export default function ProductionScreen(props) {
   const [selectedDuration, setSelectedDuration] = React.useState("DAYS");
+  const [selectedHeaderIcon, setselectedHeaderIcon] = React.useState("Grid");
 
-  const handleCallback = (childData) => {
+  const handleDurationCallback = (childData) => {
     setSelectedDuration(childData);
+  };
+
+  const handleHeaderCallback = (childData) => {
+    setselectedHeaderIcon(childData);
   };
 
   return (
     <View style={styles.container}>
       {/* HEADERs */}
       <View style={styles.header}>
-        <Header />
+        <Header parentCallback={handleHeaderCallback} />
       </View>
 
       {/* BODY */}
 
       <View style={styles.body}>
-        <Duration parentCallback={handleCallback} />
-        {selectedDuration == "DAYS" ? (
+        <Duration parentCallback={handleDurationCallback} />
+        {selectedDuration == "DAYS" && selectedHeaderIcon == "Grid" ? (
           <ScrollView>
             <View style={{ justifyContent: "center", alignItems: "center" }}>
               <View style={{ flexDirection: "row", alignItems: "baseline" }}>
@@ -88,9 +93,9 @@ export default function ProductionScreen(props) {
               </View>
             </ScrollView>
           </ScrollView>
-        ) : selectedDuration == "YEARS" ? (
+        ) : selectedDuration == "YEARS" && selectedHeaderIcon == "Solar" ? (
           <YearsGridDuration />
-        ) : selectedDuration == "WEEKS" ? (
+        ) : selectedDuration == "WEEKS" && selectedHeaderIcon == "Home" ? (
           <WeeksProduction />
         ) : null}
         {/* <View

@@ -52,15 +52,20 @@ const data = [
 ];
 export default function SolarEnergyScreen(props) {
   const [selectedDuration, setSelectedDuration] = React.useState("DAYS");
+  const [selectedHeaderIcon, setselectedHeaderIcon] = React.useState("Grid");
   const handleCallback = (childData) => {
     setSelectedDuration(childData);
+  };
+  const handleHeaderCallback = (childData) => {
+    console.log("here is the header :", childData);
+    setselectedHeaderIcon(childData);
   };
 
   return (
     <View style={styles.container}>
       {/* HEADERs */}
       <View style={styles.header}>
-        <Header />
+        <Header parentCallback={handleHeaderCallback} />
       </View>
 
       {/* BODY */}

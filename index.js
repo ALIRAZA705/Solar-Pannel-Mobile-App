@@ -11,7 +11,7 @@ import {
 import * as Font from "expo-font";
 import configureStore from "./src/store";
 import { ImageBackground } from "react-native";
-
+import i18n from "./src/components/Language/i18n";
 const store = configureStore();
 let customFonts = {
   lato: require("./assets/fonts/Lato-Thin.ttf"),
@@ -45,11 +45,7 @@ const theme = {
   // },
   fonts: configureFonts(fontConfig),
 };
-// React.useEffect(() => {
-//   Font.loadAsync({
-//     Lato: require("./assets/fonts/Lato-Thin.ttf"),
-//   });
-// }, []);
+
 const RNRedux = () => (
   <Provider store={store}>
     <PaperProvider theme={theme}>

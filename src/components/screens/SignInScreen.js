@@ -6,7 +6,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Feather from "react-native-vector-icons/Feather";
 import { TextInput } from "react-native-gesture-handler";
 import { addClubVenueInfo } from "../../store/actions";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 const initailData = {
   email: "",
@@ -17,6 +17,10 @@ const initailData = {
 export default function SignInScreen(props) {
   const dispatch = useDispatch();
   const [data, setData] = React.useState(initailData);
+  const whiteLabelStyle = useSelector(
+    (state) => state.WhiteLabelStyling.whiteLabelStyle
+  );
+
   const textInputChange = (event) => {
     if (event.target.value.length != 0) {
       setData({

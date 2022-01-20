@@ -10,7 +10,6 @@ const postRequest = async (path, body) => {
   };
 
   // Return the fetch response or throw the error.
-  console.log("here is the post request :", options);
   return await makeRequest(options);
 };
 export default postRequest;

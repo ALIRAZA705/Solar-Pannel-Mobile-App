@@ -7,12 +7,47 @@ import {
   Dimensions,
   TouchableOpacity,
   Button,
+  I18nManager,
 } from "react-native";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Gradient from "react-native-css-gradient";
 import * as Animatable from "react-native-animatable";
-
+import { useSelector, useDispatch } from "react-redux";
+import { useTranslation } from "react-i18next";
+var data = {
+  A: {
+    color: "red",
+  },
+  B: {
+    color: "#006600",
+  },
+  C: {
+    color: ["#00ADEE", "#0D2162"],
+  },
+};
 export default function GetStartedScreen(props) {
+  const [jsonData, setJsonData] = React.useState({});
+  const { t, i18n } = useTranslation();
+  const whiteLabelStyle = useSelector(
+    (state) => state.WhiteLabelStyling.whiteLabelStyle
+  );
+  const [gradientColor, setGradientColor] = React.useState(
+    `linear-gradient(45deg,#fff, #ffee00)`
+  );
+  React.useEffect(() => {
+    setTimeout(() => {
+      setJsonData(data);
+    }, 1000);
+  }, []);
+
+  React.useEffect(() => {
+    console.log("here is the jsondata:", jsonData);
+    let gradient;
+
+    gradient = `linear-gradient(45deg, ${whiteLabelStyle.signInButton?.color[0]}, ${whiteLabelStyle.signInButton?.color[1]})`;
+
+    setGradientColor(gradient);
+  }, [jsonData]);
   return (
     <>
       <View
@@ -25,9 +60,9 @@ export default function GetStartedScreen(props) {
           },
         ]}
       >
-        <Text style={styles.title}>What if we help you convert</Text>
-        <Text style={[styles.title, { fontSize: 20 }]}>
-          sunshine into money?
+        <Text style={[styles.title, whiteLabelStyle.title]}>{t("title1")}</Text>
+        <Text style={[styles.title, whiteLabelStyle.title, { fontSize: 20 }]}>
+          {t("title2")}
         </Text>
       </View>
       <View style={styles.body}>
@@ -38,22 +73,25 @@ export default function GetStartedScreen(props) {
           />
         </Animatable.View>
         <View style={{ marginTop: 15 }}>
-          <Text style={[styles.title, { fontSize: 15, color: "#5579AA" }]}>
-            Has you electricity bill rising? Don't let
-          </Text>
-          <Text style={[styles.title, { fontSize: 15, color: "#5579AA" }]}>
-            electricity bill control you. Take action.
-          </Text>
-          <Text style={[styles.title, { fontSize: 15, color: "#5579AA" }]}>
-            when we work with your electricity bill
+          <Text
+            style={[styles.title, whiteLabelStyle.subTitle, { fontSize: 15 }]}
+          >
+            {t("subtitle1")}
           </Text>
           <Text
-            style={[
-              styles.title,
-              { fontSize: 15, color: "#5579AA", justifyContent: "center" },
-            ]}
+            style={[styles.title, whiteLabelStyle.subTitle, { fontSize: 15 }]}
           >
-            goes down.
+            {t("subtitle2")}
+          </Text>
+          <Text
+            style={[styles.title, whiteLabelStyle.subTitle, { fontSize: 15 }]}
+          >
+            {t("subtitle3")}
+          </Text>
+          <Text
+            style={[styles.title, whiteLabelStyle.subTitle, { fontSize: 15 }]}
+          >
+            {t("subtitle4")}
           </Text>
         </View>
       </View>
@@ -65,7 +103,7 @@ export default function GetStartedScreen(props) {
             onPress={() => props.navigation.navigate("signInScreen")}
           >
             <Gradient
-              gradient={gradient}
+              gradient={gradientColor}
               style={{
                 width: "auto",
                 height: "auto",
@@ -79,14 +117,23 @@ export default function GetStartedScreen(props) {
               <Text
                 style={{ marginRight: "10px", color: "white", fontSize: 15 }}
               >
-                Get Started
+                {t("startButton")}
               </Text>
-              <MaterialIcons
-                name="navigate-next"
-                color="#fff"
-                size={20}
-                style={{ color: "white" }}
-              />
+              {i18n.language == "ar" ? (
+                <MaterialIcons
+                  name="navigate-before"
+                  color="#fff"
+                  size={20}
+                  style={{ color: "white" }}
+                />
+              ) : (
+                <MaterialIcons
+                  name="navigate-next"
+                  color="#fff"
+                  size={20}
+                  style={{ color: "white" }}
+                />
+              )}
             </Gradient>
           </TouchableOpacity>
         </View>
@@ -96,7 +143,7 @@ export default function GetStartedScreen(props) {
 }
 const { height } = Dimensions.get("screen");
 const height_logo = height * 0.28;
-const gradient = `linear-gradient(45deg, #00ADEE, #0D2162)`;
+
 const styles = StyleSheet.create({
   Button: {
     alignItems: "flex-end",

@@ -41,7 +41,9 @@ const data = [
 export default function WeeksProduction(props) {
   return (
     <ScrollView style={styles.container}>
-      <Card style={{ backgroundColor: "#18388E", margin: 10 }}>
+      <Card
+        style={{ backgroundColor: "#18388E", margin: 10, borderRadius: 20 }}
+      >
         <View
           style={{
             flexDirection: "row",
