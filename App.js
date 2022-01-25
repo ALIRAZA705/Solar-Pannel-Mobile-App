@@ -9,15 +9,8 @@ import Tabs from "./src/components/navigation/tabs";
 import Apptheme from "./Apptheme";
 import { whiteLabelStylingInfo } from "./src/store/actions/WhiteLabelStyling";
 import { useTranslation } from "react-i18next";
+import LanguageDialog from "./src/components/Language/i18n/LanguageDialog";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import {
-  Button,
-  Paragraph,
-  Dialog,
-  Portal,
-  Provider,
-} from "react-native-paper";
-import RNRestart from "react-native-restart";
 
 var data = {
   A: {
@@ -28,16 +21,11 @@ var data = {
   },
 };
 let rules = [];
-const languages = [
-  { name: "English", key: "en" },
-  { name: "Arabic", key: "ar" },
-  { name: "Detsch", key: "de" },
-];
 
 export default function App() {
   const dispatch = useDispatch();
-  const { t, i18n } = useTranslation();
   const [isLoading, setIsloading] = React.useState(true);
+  const { t, i18n } = useTranslation();
   const [jsonData, setJsonData] = React.useState({});
   const loadingClubVenueAddData = useSelector(
     (state) => state.FaData.loadingClubVenueAddData
@@ -46,18 +34,16 @@ export default function App() {
     (state) => state.WhiteLabelStyling.whiteLabelStyle
   );
   const [visible, setVisible] = React.useState(false);
-  const [appLanguage, setAppLanguage] = React.useState("en");
-  const showDialog = () => setVisible(true);
 
-  const hideDialog = () => setVisible(false);
-  React.useEffect(() => {
-    i18n.changeLanguage(appLanguage);
-    if (i18n.language == "ar") {
-      I18nManager.forceRTL(true);
-    } else {
-      I18nManager.forceRTL(false);
-    }
-  }, [appLanguage]);
+  const showDialog = () => {
+    setVisible(true);
+    console.log("here si the dialog :");
+  };
+
+  const hideDialog = (event) => {
+    setVisible(event);
+  };
+
   React.useEffect(() => {
     console.log("here is the css ", Apptheme.h1);
     setTimeout(() => {
@@ -89,58 +75,31 @@ export default function App() {
       background: "transparent",
     },
   };
-  const handleLanguageEditor = (event) => {
-    setAppLanguage(event);
-  };
 
   return (
     <NavigationContainer theme={navTheme}>
       <View style={styles.tabContainer}>
         <View style={styles.app}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "flex-end",
+              justifyContent: "flex-end",
+              marginRight: 20,
+              marginTop: 20,
+            }}
+          >
+            <TouchableOpacity onPress={showDialog}>
+              <Text style={{ color: "white", fontSize: 20 }}>
+                {i18n.language.toUpperCase()}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <LanguageDialog visible={visible} hideDialog={hideDialog} />
+
           {loadingClubVenueAddData != true ? <Tabs /> : <RootStackScreen />}
         </View>
 
-        <View style={styles.languagesButton}>
-          <Button onPress={showDialog} style={styles.button} color="white">
-            Change Language
-          </Button>
-          <Portal>
-            <Dialog visible={visible} onDismiss={hideDialog}>
-              <Dialog.Title>Select Language</Dialog.Title>
-              <Dialog.Content>
-                {languages.map((language, index) => {
-                  return (
-                    <>
-                      <TouchableOpacity
-                        key={index}
-                        onPress={() => {
-                          handleLanguageEditor(language.key);
-                          setVisible(false);
-                        }}
-                        style={
-                          appLanguage == language.key
-                            ? { backgroundColor: "lightgrey" }
-                            : null
-                        }
-                      >
-                        <Text
-                          style={{
-                            color: "black",
-                            fontSize: "15",
-                            borderBottomColor: "1px solid grey",
-                            padding: 10,
-                          }}
-                        >
-                          {language.name}
-                        </Text>
-                      </TouchableOpacity>
-                    </>
-                  );
-                })}
-              </Dialog.Content>
-            </Dialog>
-          </Portal>
-        </View>
         {/* {loadingClubVenueAddData != true ? <RootStackScreen /> : <Tabs />} */}
       </View>
     </NavigationContainer>
@@ -155,7 +114,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   app: {
-    flex: 5,
+    flex: 1,
   },
   button: {
     backgroundColor: "#264A88",
@@ -169,9 +128,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     height: "100%",
-  },
-  languagesButton: {
-    flex: 1,
   },
 
   tabContainer: {

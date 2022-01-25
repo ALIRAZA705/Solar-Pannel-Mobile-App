@@ -13,7 +13,9 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Gradient from "react-native-css-gradient";
 import * as Animatable from "react-native-animatable";
 import { useSelector, useDispatch } from "react-redux";
+import LanguageDialog from "../Language/i18n/LanguageDialog";
 import { useTranslation } from "react-i18next";
+
 var data = {
   A: {
     color: "red",
@@ -25,6 +27,7 @@ var data = {
     color: ["#00ADEE", "#0D2162"],
   },
 };
+
 export default function GetStartedScreen(props) {
   const [jsonData, setJsonData] = React.useState({});
   const { t, i18n } = useTranslation();
@@ -34,6 +37,21 @@ export default function GetStartedScreen(props) {
   const [gradientColor, setGradientColor] = React.useState(
     `linear-gradient(45deg,#fff, #ffee00)`
   );
+  const [gadientLanguageColor, setGradientLanguageColor] = React.useState(
+    `linear-gradient(45deg,#fff, #ffee00)`
+  );
+
+  const [visible, setVisible] = React.useState(false);
+
+  const showDialog = () => {
+    setVisible(true);
+    console.log("here si the dialog :");
+  };
+
+  const hideDialog = (event) => {
+    setVisible(event);
+  };
+
   React.useEffect(() => {
     setTimeout(() => {
       setJsonData(data);
@@ -43,9 +61,9 @@ export default function GetStartedScreen(props) {
   React.useEffect(() => {
     console.log("here is the jsondata:", jsonData);
     let gradient;
-
+    let gradient1 = `linear-gradient(45deg,#010318, #2D63A8 )`;
     gradient = `linear-gradient(45deg, ${whiteLabelStyle.signInButton?.color[0]}, ${whiteLabelStyle.signInButton?.color[1]})`;
-
+    setGradientLanguageColor(gradient1);
     setGradientColor(gradient);
   }, [jsonData]);
   return (
@@ -99,6 +117,33 @@ export default function GetStartedScreen(props) {
       <Animatable.View style={styles.footer} animation="fadeInUpBig">
         <View style={styles.Button}>
           <TouchableOpacity
+            style={[
+              styles.signInButton,
+              { alignItems: "center", justifyContent: "center" },
+            ]}
+            onPress={showDialog}
+          >
+            <Gradient
+              gradient={gadientLanguageColor}
+              style={{
+                width: "auto",
+                height: "auto",
+                padding: 13,
+                borderRadius: 30,
+                alignItems: "flex-end",
+                flexDirection: "row",
+                marginRight: 10,
+              }}
+            >
+              <Text
+                style={{ marginRight: "10px", color: "white", fontSize: 15 }}
+              >
+                {t("changeLanguage")}
+              </Text>
+            </Gradient>
+          </TouchableOpacity>
+          <LanguageDialog visible={visible} hideDialog={hideDialog} />
+          <TouchableOpacity
             style={styles.signInButton}
             onPress={() => props.navigation.navigate("signInScreen")}
           >
@@ -111,7 +156,8 @@ export default function GetStartedScreen(props) {
                 borderRadius: 30,
                 alignItems: "flex-end",
                 flexDirection: "row",
-                marginRight: 10,
+                // marginRight: 10,
+                marginLeft: 5,
               }}
             >
               <Text
@@ -137,6 +183,7 @@ export default function GetStartedScreen(props) {
             </Gradient>
           </TouchableOpacity>
         </View>
+        <View style={{ alignItems: "center", justifyContent: "center" }}></View>
       </Animatable.View>
     </>
   );
@@ -146,7 +193,17 @@ const height_logo = height * 0.28;
 
 const styles = StyleSheet.create({
   Button: {
-    alignItems: "flex-end",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+  button: {
+    backgroundColor: "#264A88",
+    paddingVertical: 20,
+    alignSelf: "center",
+    // marginVer: 15,
+    borderRadius: 10,
+    paddingHorizontal: 10,
   },
   signInButton: {
     padding: 10,
